@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Chinkuu Ki Duniya — Online</title>
+
+  <!-- PWA meta -->
+  <meta name="theme-color" content="#e91e63"/>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="page-container">
+
+    <!-- AUTH / LOGIN -->
+    <div id="authPage" class="page active">
+      <h1 class="page-title">Chinkuu Ki Duniya</h1>
+      <p class="small muted center">Private diary — Login karke join karo</p>
+
+      <div class="card animated-card">
+        <input id="email" type="email" placeholder="Email" class="auth-input" autocomplete="username" />
+        <input id="password" type="password" placeholder="Password" class="auth-input" autocomplete="current-password" />
+        <button id="loginBtn" class="main-btn">Login</button>
+        <button id="registerBtn" class="main-btn ghost">Register (For Chinkuu)</button>
+        <div style="margin-top:12px;text-align:center">
+          <button id="anonBtn" class="main-btn ghost" title="Quick access - anonymous">Quick Guest</button>
+        </div>
+      </div>
+
+      <p class="muted center" style="margin-top:12px;font-size:0.9rem">Admin login: create account and then promote via Admin → Manage users in-app (or via Firebase console).</p>
+    </div>
+
+    <!-- APP SHELL -->
+    <div id="mainApp" class="page">
+
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="left">
+          <div id="menuBtn" class="hamburger">☰</div>
+          <div class="logo-small">Chinkuu 💖</div>
+        </div>
+        <div class="center" id="currentViewTitle">Dashboard</div>
+        <div class="right">
+          <div id="userBadge" class="user-badge">—</div>
+          <button id="logoutBtn" class="small-btn">Logout</button>
+        </div>
+      </header>
+
+      <main class="content-grid">
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+          <div class="avatar-row">
+            <div id="avatar" class="avatar">B & C</div>
+            <div>
+              <div id="displayName" class="name">—</div>
+              <div id="roleBadge" class="muted small">—</div>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <button class="nav-btn active" data-view="dashboard">🏠 Dashboard</button>
+            <button class="nav-btn" data-view="letters">💌 Letters</button>
+            <button class="nav-btn" data-view="chapters">📖 Chapters</button>
+            <button class="nav-btn" data-view="gallery">🖼️ Gallery</button>
+            <button class="nav-btn" data-view="games">🎮 Games</button>
+            <button class="nav-btn" data-view="chat">💬 Chat</button>
+            <button class="nav-btn" data-view="admin" id="adminNavBtn" style="display:none">⚙️ Admin</button>
+          </nav>
+
+          <div style="margin-top:12px">
+            <div class="muted small">Pro tip: Admin can upload initial data & manage content.</div>
+          </div>
+        </aside>
+
+        <!-- Views -->
+        <section class="main-card">
+
+          <!-- DASHBOARD -->
+          <section id="dashboard" class="view active">
+            <h2>Welcome</h2>
+            <p class="muted">Recent activity, quick add and stats.</p>
+
+            <div class="grid-2" style="margin-top:12px">
+              <div class="card mini-card">
+                <h3 id="statLetters">—</h3>
+                <p class="muted">Letters</p>
+              </div>
+              <div class="card mini-card">
+                <h3 id="statChapters">—</h3>
+                <p class="muted">Chapters</p>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <button id="quickAddBtn" class="main-btn">+ New Letter</button>
+            </div>
+          </section>
+
+          <!-- LETTERS -->
+          <section id="letters" class="view">
+            <div class="view-header">
+              <h2>Letters</h2>
+              <div class="searchbar">
+                <input id="lettersSearch" placeholder="Search letters..." />
+              </div>
+            </div>
+            <div id="lettersList" class="stack"></div>
+          </section>
+
+          <!-- CHAPTERS -->
+          <section id="chapters" class="view">
+            <h2>Chapters</h2>
+            <div id="chaptersList" class="stack"></div>
+          </section>
+
+          <!-- GALLERY -->
+          <section id="gallery" class="view">
+            <h2>Gallery</h2>
+            <div id="uploadCard" class="card" style="display:none">
+              <h3>Upload Photo</h3>
+              <input type="file" accept="image/*" id="photoInput" />
+              <input placeholder="Caption (optional)" id="photoCaption" />
+              <button id="uploadPhotoBtn" class="main-btn">Upload</button>
+            </div>
+            <div id="galleryGrid" class="masonry"></div>
+            <div id="galleryLoader" class="muted center">Loading...</div>
+          </section>
+
+          <!-- GAMES -->
+          <section id="games" class="view">
+            <h2>Games</h2>
+            <div class="stack">
+              <div class="card">
+                <h3>Love Quiz</h3>
+                <div id="quiz" class="quiz">
+                  <div id="quiz-progress" class="muted"></div>
+                  <div id="quiz-question" class="quiz-question"></div>
+                  <div id="quiz-options" class="quiz-options"></div>
+                  <div id="quiz-result"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>Love Calculator</h3>
+                <input id="calc-name1" placeholder="Your name" />
+                <input id="calc-name2" placeholder="Partner name" />
+                <button id="calc-btn" class="main-btn">Calculate</button>
+                <div id="calc-result" class="muted center" style="margin-top:10px"></div>
+              </div>
+
+              <div class="card">
+                <h3>Spinner</h3>
+                <div class="spinner-container">
+                  <div id="spinner-wheel" class="spinner-wheel" aria-hidden="true"></div>
+                  <button id="spin-btn" class="main-btn">Spin</button>
+                  <div id="spinner-result" class="muted center" style="min-height:36px"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CHAT -->
+          <section id="chat" class="view">
+            <h2>Chat</h2>
+            <div id="chatWindow" class="chat-window"></div>
+            <div class="chat-input-row">
+              <input id="chatInput" placeholder="Type a message..." />
+              <button id="chatSend" class="main-btn">Send</button>
+            </div>
+          </section>
+
+          <!-- ADMIN -->
+          <section id="admin" class="view">
+            <h2>Admin Panel</h2>
+
+            <div class="stack">
+              <div class="card">
+                <h3>Upload initial seed</h3>
+                <button id="uploadSeedBtn" class="main-btn">Upload Seed Data</button>
+              </div>
+
+              <div class="card">
+                <h3>Create Letter / Chapter</h3>
+                <input id="admin-title" placeholder="Title / Chapter Title" />
+                <textarea id="admin-body" placeholder="Content"></textarea>
+                <div style="display:flex;gap:8px">
+                  <button id="admin-save-letter" class="main-btn">Save Letter</button>
+                  <button id="admin-save-chapter" class="main-btn ghost">Save Chapter</button>
+                </div>
+              </div>
+
+              <div class="card">
+                <h3>Manage users</h3>
+                <p class="muted">Promote a user to admin by entering UID below</p>
+                <input id="promoteUid" placeholder="User UID" />
+                <button id="promoteBtn" class="main-btn">Promote to Admin</button>
+              </div>
+
+            </div>
+          </section>
+
+        </section>
+
+      </main>
+
+    </div>
+
+    <!-- MODALS / VIEWS USED BY JS (hidden) -->
+    <div id="modalContainer"></div>
+
+  </div>
+
+  <!-- Firebase Config -->
+  <script>
+    window.__FIREBASE_CONFIG__ = {
+      apiKey: "AIzaSyALgY7fJzvlx5mGqnH3ZNHpjlsWQ5DMgcA",
+      authDomain: "chinkuu-ki-duniya.firebaseapp.com",
+      projectId: "chinkuu-ki-duniya",
+      storageBucket: "chinkuu-ki-duniya.firebasestorage.app",
+      messagingSenderId: "165355950638",
+      appId: "1:165355950638:web:f0503f587277f50c8fc5bf",
+      measurementId: "G-S6J3ERMW9H"
+    };
+  </script>
+
+  <!-- Firebase modular sdk + app code -->
+  <script type="module">
+    import('./app.js').then(m => m.startApp(window.__FIREBASE_CONFIG__)).catch(err => console.error(err));
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(e => console.warn('SW register failed', e));
+    }
+  </script>
+</body>
+</html>

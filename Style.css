@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #111;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+}
+
+#authSection, #mainApp {
+  padding: 20px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #222;
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #ff2d95;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+}
+
+.post {
+  padding: 15px;
+  background: #1c1c1c;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.comments p {
+  background: #2a2a2a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 4px 0;
+}
+
+#messagesContainer {
+  height: 250px;
+  overflow-y: auto;
+  background: #1b1b1b;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+#chatInput {
+  margin-top: 10px;
+}
